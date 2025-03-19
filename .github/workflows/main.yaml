@@ -1,8 +1,8 @@
-name: Daily LeetCode Submission with Selenium
+name: Daily LeetCode Submission
 
 on:
   schedule:
-    - cron: '23 18 * * *'  # Runs daily at 5:43 PM UTC
+    - cron: '27 18 * * *'  # Runs daily at 5:43 PM UTC
 
 jobs:
   submit:
