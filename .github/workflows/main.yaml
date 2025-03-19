@@ -2,8 +2,9 @@ name: Daily LeetCode Submission
 
 on:
   schedule:
-    - cron: '45 18 * * *'  # Runs daily at 5:43 PM UTC
-  workflow_dispatch:
+    - cron: "*/1 * * * *"  # Runs daily at 5:43 PM UTC
+
+
 jobs:
   submit:
     runs-on: ubuntu-latest
