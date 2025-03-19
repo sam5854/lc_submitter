@@ -1,0 +1,47 @@
+name: Daily LeetCode Submission with Selenium
+
+on:
+  schedule:
+    - cron: '41 17 * * *'  # This runs daily at 5:40 PM UTC
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Python Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Install Chrome and ChromeDriver
+        run: |
+          sudo apt-get update
+          # Install Google Chrome (if not already available)
+          sudo apt-get install -y google-chrome-stable unzip
+          
+          # Get the installed Chrome version
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
+          CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d. -f1)
+          echo "Installed Chrome version: $CHROME_VERSION"
+          
+          # Find the matching ChromeDriver version based on the major version
+          DRIVER_VERSION=$(curl -sS "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION")
+          echo "Matching ChromeDriver version: $DRIVER_VERSION"
+          
+          # Download and install ChromeDriver
+          wget -N "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/chromedriver
+          sudo chmod +x /usr/local/bin/chromedriver
+
+      - name: Run LeetCode Submission Script
+        run: |
+          python3 main.py
