@@ -12,7 +12,7 @@ def main():
             start_program()
             # Optional: Add a small delay between runs
             if i < run_count - 1:
-                time.sleep(1)
+                time.sleep(20)
         print("All runs completed")
         
     except Exception as e:

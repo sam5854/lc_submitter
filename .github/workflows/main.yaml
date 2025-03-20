@@ -2,8 +2,7 @@ name: Daily LeetCode Submission
 
 on:
   schedule:
-    - cron: "*/1 * * * *"  # Runs daily at 5:43 PM UTC
-
+    - cron: "0 * * * *"  # Runs daily at 5:43 PM UTC
 
 jobs:
   submit:
@@ -30,3 +29,11 @@ jobs:
       - name: Run LeetCode Submission Script
         run: |
           python main.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.email "samarth6969@gmail.com"
+          git config --global user.name "Samarth"
+          git add problem_num.txt
+          git commit -m "Update problem number from script"
+          git push origin main
