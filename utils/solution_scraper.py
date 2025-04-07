@@ -67,7 +67,7 @@ class Booking(webdriver.Chrome):
                 EC.element_to_be_clickable((By.ID, "react-aria-2-tab-cpp"))
             )
             cpp_tab.click()
-            div_element = self.find_element(By.ID, 'react-aria-2-tabpane-cpp')
+            div_element = self.find_element(By.ID, 'react-aria-2-tabpane-')
             print("Extracting C++ code...")
 
             soup = BeautifulSoup(div_element.get_attribute('outerHTML'), 'html.parser')
