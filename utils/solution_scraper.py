@@ -58,7 +58,7 @@ class Booking(webdriver.Chrome):
             )
             search_input.clear()
             search_input.send_keys(f"{problem}.")
-            time.sleep(2)
+            time.sleep(10)
             search_input.send_keys(Keys.RETURN)
             print(f"Searching for {problem}...")
             time.sleep(3)

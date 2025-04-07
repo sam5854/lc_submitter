@@ -1,5 +1,6 @@
 import time
 from utils.submit_solution import start_program
+import sys
 
 def main():
     try:
@@ -17,8 +18,10 @@ def main():
         
     except Exception as e:
         error_message = str(e)
-        print(f"An error occurred: {error_message}")    
+        print(f"An error occurred: {error_message}")
         time.sleep(2)
+        # Exit with a non-zero status code to indicate failure
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
