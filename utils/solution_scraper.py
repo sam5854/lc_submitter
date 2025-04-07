@@ -65,7 +65,7 @@ class Booking(webdriver.Chrome):
             time.sleep(3)
 
             cpp_tab = WebDriverWait(self, 10).until(
-                EC.element_to_be_clickable((By.ID, "react-aria-2-tab-"))
+                EC.element_to_be_clickable((By.ID, "react-aria-2-tab-cpp"))
             )
             cpp_tab.click()
             div_element = self.find_element(By.ID, 'react-aria-2-tabpane-cpp')
