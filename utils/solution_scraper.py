@@ -51,39 +51,32 @@ class Booking(webdriver.Chrome):
         cleaned_text = re.sub(r'^\d+', '', text, flags=re.MULTILINE)
         return cleaned_text
     
-    def find_solution(self, problem):   
-        try:
-            search_input = WebDriverWait(self, 10).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="search"]'))
-            )
-            search_input.clear()
-            search_input.send_keys(f"{problem}.")
-            time.sleep(10)
-            search_input.send_keys(Keys.RETURN)
-            print(f"Searching for {problem}...")
-            time.sleep(3)
+    def find_solution(self, problem):  
+        search_input = WebDriverWait(self, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="search"]'))
+        )
+        search_input.clear()
+        search_input.send_keys(f"{problem}.")
+        time.sleep(10)
+        search_input.send_keys(Keys.RETURN)
+        print(f"Searching for {problem}...")
+        time.sleep(3)
 
-            cpp_tab = WebDriverWait(self, 10).until(
-                EC.element_to_be_clickable((By.ID, "react-aria-2-tab-cpp"))
-            )
-            cpp_tab.click()
-            div_element = self.find_element(By.ID, 'react-aria-2-tabpane-')
-            print("Extracting C++ code...")
+        cpp_tab = WebDriverWait(self, 10).until(
+            EC.element_to_be_clickable((By.ID, "react-aria-2-tab-cpp"))
+        )
+        cpp_tab.click()
+        div_element = self.find_element(By.ID, 'react-aria-2-tabpane-cpp')
+        print("Extracting C++ code...")
 
-            soup = BeautifulSoup(div_element.get_attribute('outerHTML'), 'html.parser')
-            code_tag = soup.find("code", class_="language-cpp")
-            
-            cpp_code = code_tag.get_text()
-            cleaned_text = Booking.remove_line_numbers(cpp_code)
-            
-            print("Successfully extracted and cleaned C++ code.")
-            # print(cleaned_text)
-            print("Successfully extracted and cleaned C++ code.")
-            return cleaned_text
+        soup = BeautifulSoup(div_element.get_attribute('outerHTML'), 'html.parser')
+        code_tag = soup.find("code", class_="language-cpp")
+        
+        cpp_code = code_tag.get_text()
+        cleaned_text = Booking.remove_line_numbers(cpp_code)
+        
+        print("Successfully extracted and cleaned C++ code.")
+        # print(cleaned_text)
+        print("Successfully extracted and cleaned C++ code.")
+        return cleaned_text
 
-        except Exception as e:
-            error_message = str(e)
-            print(f"Unhandled exception: {error_message}")
-            traceback_details = traceback.format_exc()
-            print(f"Traceback details: {traceback_details}")
-            raise
