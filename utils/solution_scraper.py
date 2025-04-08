@@ -9,9 +9,9 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 import re
 import sys
-# import chromedriver_autoinstaller
+import chromedriver_autoinstaller
 
-# chromedriver_autoinstaller.install()
+chromedriver_autoinstaller.install()
 
 
 class Booking(webdriver.Chrome):
