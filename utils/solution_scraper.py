@@ -26,7 +26,7 @@ class Booking(webdriver.Chrome):
         chrome_options.add_argument("--disable-extensions")  # Disable extensions
         chrome_options.page_load_strategy = 'eager'
         super(Booking, self).__init__(options=chrome_options)
-        self.implicitly_wait(3)
+        self.implicitly_wait(15)
         self.maximize_window()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -54,6 +54,7 @@ class Booking(webdriver.Chrome):
     
     def find_solution(self, problem):   
         try:
+            time.sleep(20)
             search_input = WebDriverWait(self, 10).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="search"]'))
             )
@@ -67,6 +68,7 @@ class Booking(webdriver.Chrome):
             cpp_tab = WebDriverWait(self, 10).until(
                 EC.element_to_be_clickable((By.ID, "react-aria-2-tab-cpp"))
             )
+            self.execute_script("arguments[0].scrollIntoView(true);", cpp_tab)
             cpp_tab.click()
             div_element = self.find_element(By.ID, 'react-aria-2-tabpane-cpp')
             print("Extracting C++ code...")
