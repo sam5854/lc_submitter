@@ -3,7 +3,6 @@ import re
 import time
 import requests
 import traceback
-from utils.solution_scraper import Booking
 import utils.cookies as cookies
 
 def clean_code(html_string):
@@ -92,17 +91,17 @@ def get_leetcode_question_title(problem_id) -> str:
         traceback.print_exc()
         return "Problem not found"
 
-def get_solution_babes(problem_num):
+def get_solution_babes(file_name):
     try:
-        with Booking(teardown=True) as bot:
-            bot.land_first_page()
-            return bot.find_solution(problem=problem_num)
+        with open(f"C++/{file_name}.cpp", "r") as file:
+            solution = file.read()
+        return solution
     except Exception as e:
         print(f"Error in get_solution_babes: {e}")
         traceback.print_exc()
-        return ""
+        return None
 
-def connect_to_browser(title_slug, headers, problem_num):
+def connect_to_browser(title_slug, headers):
     try:
         print(f"Processing: {title_slug}")
         
@@ -121,7 +120,7 @@ def connect_to_browser(title_slug, headers, problem_num):
         input_data = input_data['data']['question']['exampleTestcaseList']
         data_input = "\n".join(input_data)
         
-        correct_solution = get_solution_babes(problem_num)
+        correct_solution = get_solution_babes(title_slug)
         if not correct_solution:
             print(f"No solution found for {title_slug}")
             return False
@@ -167,15 +166,9 @@ def connect_to_browser(title_slug, headers, problem_num):
         traceback.print_exc()
         return False
 
-def start_program():
+def start_program(file_name):
     try:
-        with open('problem_num.txt', 'r') as file:
-            problem_num = int(file.read().strip())
-
-        with open('problem_num.txt', 'w') as file:
-            file.write(str(problem_num + 1))
-
-        title_slug = get_leetcode_question_title(problem_num)
+        title_slug = file_name.split('.')[0]
 
         headers = {
             'Host': 'leetcode.com',
@@ -193,10 +186,10 @@ def start_program():
             'Accept-Language': 'en-US,en;q=0.9',
         }
 
-        if connect_to_browser(title_slug, headers, problem_num):
-            print(f"Successfully submitted problem {problem_num}: {title_slug}")
+        if connect_to_browser(title_slug, headers):
+            print(f"Successfully submitted problem {title_slug}")
         else:
-            print(f"Failed to submit problem {problem_num}: {title_slug}")
+            print(f"Failed to submit problem {title_slug}")
     except Exception as e:
         print(f"Error in start_program: {e}")
         traceback.print_exc()
