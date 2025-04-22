@@ -3,6 +3,7 @@ import re
 import time
 import requests
 import traceback
+import sys
 import utils.cookies as cookies
 
 def clean_code(html_string):
@@ -35,6 +36,7 @@ def check_code_execution(interpret_id, headers):
     except Exception as e:
         print(f"Error in check_code_execution: {e}")
         traceback.print_exc()
+        sys.exit(1) 
         return False
 
 def check_code_submission(submission_id, headers):
@@ -58,38 +60,9 @@ def check_code_submission(submission_id, headers):
     except Exception as e:
         print(f"Error in check_code_submission: {e}")
         traceback.print_exc()
+        sys.exit(1) 
         return False
 
-def convert_title_to_slug(title):
-    try:
-        # Remove special cases for LeetCode slugs
-        title = title.replace('(x, n)', 'x-n').replace('(x)', 'x')
-        title = re.sub(r'[^a-zA-Z0-9\s-]', '', title)  # Remove non-alphanumeric except spaces and hyphens
-        title = re.sub(r'\s+', '-', title.strip())  # Replace spaces with hyphens
-        return title.lower()
-    except Exception as e:
-        print(f"Error in convert_title_to_slug: {e}")
-        traceback.print_exc()
-        return ""
-
-def get_leetcode_question_title(problem_id) -> str:
-    try:
-        url = "https://leetcode.com/api/problems/all/"
-        response = requests.get(url)
-        if response.status_code != 200:
-            print("Failed to fetch problems list")
-            raise Exception("Failed to fetch problems list")
-        data = response.json()
-        for item in data["stat_status_pairs"]:
-            if item["stat"]["frontend_question_id"] == problem_id:
-                title = item["stat"]["question__title"]
-                return convert_title_to_slug(title)
-        print("Problem not found")
-        return "Problem not found"
-    except Exception as e:
-        print(f"Error in get_leetcode_question_title: {e}")
-        traceback.print_exc()
-        return "Problem not found"
 
 def get_solution_babes(file_name):
     try:
@@ -164,6 +137,7 @@ def connect_to_browser(title_slug, headers):
     except Exception as e:
         print(f"Error in connect_to_browser: {e}")
         traceback.print_exc()
+        sys.exit(1) 
         return False
 
 def start_program(file_name):
@@ -190,6 +164,8 @@ def start_program(file_name):
             print(f"Successfully submitted problem {title_slug}")
         else:
             print(f"Failed to submit problem {title_slug}")
+            sys.exit(1) 
     except Exception as e:
         print(f"Error in start_program: {e}")
         traceback.print_exc()
+        sys.exit(1) 
