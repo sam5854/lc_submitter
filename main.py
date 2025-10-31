@@ -25,9 +25,9 @@ def main():
             # Pass the selected file name to start_program
             start_program(selected_file)
 
-            # Delete the selected file
-            os.remove(os.path.join(cpp_folder_path, selected_file))
-            print(f"Deleted file: {selected_file}")
+            # # Delete the selected file
+            # os.remove(os.path.join(cpp_folder_path, selected_file))
+            # print(f"Deleted file: {selected_file}")
 
             if i < run_count - 1:
                 time.sleep(20)
